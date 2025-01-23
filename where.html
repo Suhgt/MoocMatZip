@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Where Am I?</title>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIUTe4sQAQX7xynLDF3Z1Pxy5LSqt1Vqs"></script>
+    <script type="text/javascript" src="where.js"></script>
+</head>
+<body>
+    <h1>My Locations</h1>
+    <div id="map" style="width: 100%; height: 500px;"></div>
+    <script type="text/javascript">
+        // Initialize the map
+        function initMap() {
+            // Create a map centered at an approximate center point
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 37.588227, lng: 126.993606 },
+                zoom: 12
+            });
+
+            // Iterate through the data and add markers
+            for (var i = 0; i < myData.length; i++) {
+                var data = myData[i];
+                var latlng = new google.maps.LatLng(data.lat, data.lng);
+
+                // Set a default value for 'nickname' if it is not defined
+                var nickname = data.nickname ? data.nickname : "N/A";
+
+                // Create a marker
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    title: data.name
+                });
+
+                // Create an info window for the marker
+                let infoWindow = new google.maps.InfoWindow({
+                    content: `<div>
+                                <h4>${data.name}</h4>
+                                <p>Latitude: ${data.lat}</p>
+                                <p>Longitude: ${data.lng}</p>
+                                <p>Nickname: ${nickname}</p>
+                              </div>`
+                });
+
+                // Add a click listener to the marker to show the info window
+                marker.addListener('click', function() {
+                    infoWindow.open(map, this);
+                });
+            }
+        }
+
+        // Call the initMap function
+        initMap();
+    </script>
+</body>
+</html>
